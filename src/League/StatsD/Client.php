@@ -250,7 +250,7 @@ class Client
     protected function send(array $data)
     {
 
-        $socket = @fsockopen('udp://' . $this->host, $this->port, $errno, $errstr);
+        $socket = @pfsockopen('udp://' . $this->host, $this->port, $errno, $errstr);
         if (! $socket) {
             throw new ConnectionException($this, '(' . $errno . ') ' . $errstr);
         }
@@ -261,7 +261,6 @@ class Client
         }
         $this->message = implode("\n", $this->messages);
         @fwrite($socket, $this->message);
-        fclose($socket);
         return $this;
 
     }
